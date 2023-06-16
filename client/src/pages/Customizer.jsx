@@ -11,6 +11,69 @@ import { AIpicker, ColorPicker, CustomButton, FilePicker, Tab } from '../compone
 
 const Customizer = () => {
   const snap = useSnapshot(state)
+
+  const [file, setFile] = useState('')
+
+  const [prompt, setPrompt] = useState('')
+
+  const [generatingImg, setGeneratingImg] = useState(false)
+  const [activeEditortab, setActiveEditorTab] = useState("")
+  const [activeFilterTab, setActiveFilterTab] = useState(
+    {
+      logoShirt : true,
+      styleShirt : false
+    }
+  )
+
+  //show tab content depending on active tab
+  const generateTabContent = () =>{
+    switch (activeEditortab) {
+      case "colorpicker":
+        return <ColorPicker />
+      case "filepicker":
+        return <FilePicker
+          file = {file}
+          setFile = {setFile}
+          readFile = {readFile}
+         />
+      case "aipicker":
+        return <AIpicker />
+       default : return null 
+    }
+
+  }
+  const handleDecals = (type, result ) => {
+    const decalType = DecalTypes[type]
+
+    state[decalType.stateProperty]=result
+
+    if(!activeFilterTab[decalType.filterTab]){
+      handleActiveFilterTab(decalType.filterTab)
+    }
+
+  }
+
+  const handleActiveFilterTab = (tabname) => {
+    switch(tabname) {
+      case "logoShirt":
+        state.isLogoTexture = !activeFilterTab[tabname]
+        break
+      case "stylishShirt":
+        state.isFullTexture = !activeFilterTab[tabname]
+        break
+      default:       
+        state.isLogoTexture = true
+        state.isFullTexture = false
+    }
+  }
+
+  const readFile = (type) => {
+    reader(file)
+    .then((result) => {
+      handleDecals(type,result)
+      setActiveEditorTab("")
+    })
+  }
   return (
     <AnimatePresence>
       {!snap.intro && (
@@ -26,10 +89,12 @@ const Customizer = () => {
                     <Tab
                       key={tab.name}
                       tab={tab}
-                      handleClick={() => {}}></Tab>
+                      handleClick={() => setActiveEditorTab(tab.name)}></Tab>
                   )
 
                   )}
+
+                  {generateTabContent()}
               </div>
 
             </div>
