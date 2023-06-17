@@ -37,8 +37,31 @@ const Customizer = () => {
           readFile = {readFile}
          />
       case "aipicker":
-        return <AIpicker />
+        return <AIpicker
+          prompt={prompt}
+          setPrompt={setPrompt}
+          generatingImg={generatingImg}
+          handleSubmit= {handleSubmit}
+        />
        default : return null 
+    }
+
+  }
+
+  const handleSubmit = async (type) =>{
+    if(!prompt)
+    return alert("Enter a prompt")
+
+    try {
+      //call backend to generate AI image
+      
+    } catch (error) {
+      alert(error)
+      
+    } finally {
+      setGeneratingImg(false)
+      setActiveEditorTab("")
+
     }
 
   }
