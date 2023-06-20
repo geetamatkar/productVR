@@ -14,6 +14,38 @@ const AIpicker = ({prompt, setPrompt, generatingImg, handleSubmit}) => {
 
       />
 
+      <div className='flex flex-wrap gap-3'>
+        {generatingImg? (
+          <CustomButton 
+            type="outline"
+            title="AI suggesting...."
+            customStyles="text-xs"
+            />
+        ) : (
+          <>
+          <CustomButton 
+            type="outline"
+            title="AI logo"
+            handleClick={() => handleSubmit('logo')}
+            customStyles="text-xs"
+
+            />
+
+            <CustomButton 
+            type="filled"
+            title="AI Full"
+            handleClick={()=>handleSubmit('full')}
+            customStyles="text-xs"
+
+            />
+          
+          </>
+          
+        )
+      }
+
+      </div>
+
     </div>
   )
 }
